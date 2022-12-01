@@ -1,0 +1,73 @@
+
+
+import java.util.Scanner;
+public class Main
+{
+    public static void main(String[] args) 
+    {
+       
+        int n, total = 0,totalcredits=0, percentage;
+        Scanner s = new Scanner(System.in);
+        
+        System.out.print("Enter Your Name:");
+        String Name= s.next();
+        System.out.print("Enter Your USN:");
+        String USN= s.next();
+        System.out.print("Enter no. of subject:");
+        n = s.nextInt();
+        int marks[] = new int[n];
+        System.out.println("Enter marks out of 100:");
+        for(int i = 0; i < n; i++)
+        {
+            marks[i] = s.nextInt();
+            total = total + marks[i];
+        }
+      int credits[] = new int[n];
+ System.out.println("Enter Credits:");
+        for(int i = 0; i < n; i++)
+        {
+            credits[i] = s.nextInt();
+            totalcredits = totalcredits+ credits[i];
+        }
+        percentage = total / n;
+           
+            System.out.print("The student Grade is: ");
+        if(total>=90)
+        {
+            System.out.print("O");
+        }
+        else if(total>=80 && total<90)
+        {
+           System.out.print("A+");
+        } 
+        else if(total>=70 && total<80)
+        {
+            System.out.print("A");
+        }
+       else if(total>=60 && total<70)
+        {
+            System.out.print("B+");
+        }
+       else if(total>=50 && total<60)
+        {
+            System.out.print("B");
+        }else if(total>=40 && total<50)
+        {
+            System.out.print("C");
+        }else if(total>=36 && total<40)
+        {
+            System.out.print("A");
+        }
+         else
+        {
+            System.out.print("F");
+        }
+
+System.out.println("Name:"+Name);
+System.out.println("Usn:"+USN);
+        System.out.println("Sum:"+totalcredits);
+        System.out.println("Sum:"+total);
+        System.out.println("Percentage:"+percentage);
+    }
+    
+}

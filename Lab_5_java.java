@@ -1,139 +1,153 @@
-import java.util.*; import java.lang.*; class Account
+import java.util.*;
+import java.lang.Math.*;
+class bank
 {
+	public String name;
+	public int acc_no;
+	public double bal;
 
-public String acc_name; public double acc_no; public int acc_type; public double balance;
-public void getdata(String name,double no,int type,double bal)
-{
+	public void accept()
+	{
+		Scanner s=new Scanner(System.in);
+		System.out.print("\nEnter the name of the account holder: ");
+		name=s.next();
+		System.out.print("Enter the account number: ");
+		acc_no=s.nextInt();
+		System.out.print("Enter the account balance: ");
+		bal=s.nextDouble();
+	}
 
-acc_name=name; acc_no=no; acc_type=type; balance=bal;
-}
-
-}
-class Savings extends Account
-
-{
-public void deposit(double amt)
-
-{
-
-balance=balance+amt; System.out.println(balance);
-}
-public void withdraw(double amt)
-
-{
-balance=balance-amt; System.out.println(balance);
-}
-
-public void interest(int time,int no)
-
-{
-double intr=balance*(1+6/no); intr=Math.pow(intr,(time*no)); System.out.println("Intertest calculated is"+intr);
-
-balance=balance+intr;
-
-System.out.println("The new balance is"+balance);
+	public void display()
+	{
+		System.out.println("\n************************\n");
+		System.out.println("Name: "+name+"\nAccount number: "+acc_no+"\nBalance: Rs"+bal);
+	}
 
 }
 
-}
-class Current extends Account
-
+class savings extends bank
 {
-public void deposit(double amt)
+	public void cheque()
+	{
+		System.out.println("\nNo cheque services");
+	}
 
-{
-balance=balance+amt; System.out.println(balance);
-}
-public void withdraw(double amt)
+	public void withdrawal()
+	{
+		float amount;
+		Scanner a=new Scanner(System.in);
+		System.out.println("\nNo minimun balance required");
+		System.out.print("Enter the amount to be withdrawm: ");
+		amount=a.nextFloat();
+		if(amount>super.bal)
+		{
+			System.out.println("Balance is insufficient");
+		}
+		else
+		{
+			super.bal=super.bal-amount;
+			System.out.println(amount+" withdrawm");
+			System.out.println("Available balance: Rs"+super.bal);
+		}
+	}
 
-{
-balance=balance-amt; System.out.println(balance); check(balance);
-}
-public void check(double amt)
-
-{
-
-if(amt<10000)
-{
-
-balance =balance-500; System.out.println("Insufficient Balance"+balance);
-
-}
-
-}
-
-
-
-}
-class Main
-
-{
-public static void main(String args[])
-
-{
-Scanner sc=new Scanner(System.in); int temp=1;
-while(temp==1)
-{
-
-double amt=0; System.out.println("Enter name"); sc.next();
-String name=sc.nextLine(); System.out.println("Enter acc_no"); double no=sc.nextDouble();
-System.out.println("Enter acc_type\n0 for Savings\n1 for Current"); int type=sc.nextInt();
-do
-{
-System.out.println("Enter  balance");
-
-amt=sc.nextDouble();
-
-}while(type==1 && amt<10000); if(type==0)
-{
-Savings s=new Savings(); s.getdata(name,no,type,amt);
-System.out.println("\n1.Deposit\n\2.Withdraw\n3.Interest");  int temp3=sc.nextInt();
-if(temp3==1)
-{
-
-System.out.println("Enter Amoumt"); double amt1=sc.nextDouble(); s.deposit(amt1);
+	public void compound_interest(){
+		System.out.println("\nRate of interest: 8%");
+		int time;
+		Scanner c=new Scanner(System.in);
+		System.out.print("\nEnter time: ");
+		time=c.nextInt();
+		double ci=super.bal*(Math.pow((1+8.0/100),time)) - super.bal;
+		System.out.println("\nCompound Interest: Rs"+ci);
+		super.bal=super.bal+(float)ci;
+		System.out.println("Available balance: Rs"+super.bal);
+	}
 }
 
-else if(temp3==2)
+class current extends bank
 {
+	public void cheque()
+	{
+		System.out.println("\nCheque services available");
+	}
 
-System.out.println("Enter Amoumt"); double amt1=sc.nextDouble(); s.withdraw(amt1);
+	public void withdrawal()
+	{
+		float amount;
+		Scanner a=new Scanner(System.in);
+		System.out.println("\nMinimun balance= Rs.1000.00");
+		if(super.bal<1000)
+			System.out.println("\nBalance is insufficient to withdraw");
+		else
+		{
+			System.out.print("Enter the amount to be withdrawm: ");
+			amount=a.nextFloat();
+			if(amount>(super.bal-1000))
+			{
+				System.out.println("Balance is insufficient");
+			}
+			else
+			{
+				super.bal=super.bal-amount;
+				System.out.println(amount+" withdrawm");
+				System.out.println("Available balance= "+super.bal);
+			}
+		}
+	}
+
+	public void penalty()
+	{
+		if(super.bal<1000)
+		{
+			System.out.print("\nPenalty rate: 10%");
+			double penalty=super.bal*(10.0/100);
+			super.bal=super.bal-penalty;
+			System.out.println("\nPenalty amount: Rs"+penalty);
+			System.out.println("\nAvailable balance: Rs"+super.bal);
+		}
+	}
+		
 }
-else if(temp3==3)
 
+class bankinterest
 {
-System.out.println("Enter time period");
-
-int tp=sc.nextInt(); System.out.println("Enter no of times"); int nof=sc.nextInt();
-s.interest(tp,nof);
-
+	public static void main(String args[])
+	{
+		savings obj1[]=new savings[3];
+		current obj2[]=new current[3];
+		System.out.print("Enter the number of accounts: ");
+		Scanner x=new Scanner(System.in);
+		int n=x.nextInt();
+		int i=0;
+		int j=0;
+		int k=0;
+		while(i<n)
+		{
+			System.out.println("\nAccount "+(i+1));
+			System.out.println("\n1)Savings\n2)Current");
+			System.out.print("Enter the type of account: ");
+			int ch=x.nextInt();
+			if(ch==1)
+			{
+				obj1[j]=new savings();
+				obj1[j].accept();
+				obj1[j].display();
+				obj1[j].cheque();
+				obj1[j].compound_interest();
+				obj1[j].withdrawal();
+				j++;
+			}
+			else
+			{
+				obj2[k]=new current();
+				obj2[k].accept();
+				obj2[k].display();
+				obj2[k].cheque();
+				obj2[k].withdrawal();
+				obj2[k].penalty();
+				k++;
+			}
+			i++;
+		}
+	}
 }
-
-}
-else if(type==1)
-
-{
-Current c=new Current(); c.getdata(name,no,type,amt); System.out.println("\n1.Deposit\n\2.Withdraw"); int temp3=sc.nextInt();
-if(temp3==1)
-{
-
-System.out.println("Enter Amoumt"); double amt1=sc.nextDouble(); c.deposit(amt1);
-}
-
-else if(temp3==2)
-
-{
-System.out.println("Enter Amoumt"); double amt1=sc.nextDouble(); c.withdraw(amt1);
-
-}
-
-
-
-}
-
-System.out.println("To continue 1 else 0"); temp=sc.nextInt();
-}
-
-}
-
-} 

@@ -1,153 +1,164 @@
-import java.util.*;
-import java.lang.Math.*;
-class bank
-{
-	public String name;
-	public int acc_no;
-	public double bal;
+import java.util.Scanner;
 
-	public void accept()
+class Account
+{
+	String name;
+	int type;
+	long accno;
+	double balance;
+	void setA()
 	{
 		Scanner s=new Scanner(System.in);
-		System.out.print("\nEnter the name of the account holder: ");
-		name=s.next();
-		System.out.print("Enter the account number: ");
-		acc_no=s.nextInt();
-		System.out.print("Enter the account balance: ");
-		bal=s.nextDouble();
-	}
-
-	public void display()
-	{
-		System.out.println("\n************************\n");
-		System.out.println("Name: "+name+"\nAccount number: "+acc_no+"\nBalance: Rs"+bal);
-	}
-
-}
-
-class savings extends bank
-{
-	public void cheque()
-	{
-		System.out.println("\nNo cheque services");
-	}
-
-	public void withdrawal()
-	{
-		float amount;
-		Scanner a=new Scanner(System.in);
-		System.out.println("\nNo minimun balance required");
-		System.out.print("Enter the amount to be withdrawm: ");
-		amount=a.nextFloat();
-		if(amount>super.bal)
-		{
-			System.out.println("Balance is insufficient");
-		}
-		else
-		{
-			super.bal=super.bal-amount;
-			System.out.println(amount+" withdrawm");
-			System.out.println("Available balance: Rs"+super.bal);
-		}
-	}
-
-	public void compound_interest(){
-		System.out.println("\nRate of interest: 8%");
-		int time;
-		Scanner c=new Scanner(System.in);
-		System.out.print("\nEnter time: ");
-		time=c.nextInt();
-		double ci=super.bal*(Math.pow((1+8.0/100),time)) - super.bal;
-		System.out.println("\nCompound Interest: Rs"+ci);
-		super.bal=super.bal+(float)ci;
-		System.out.println("Available balance: Rs"+super.bal);
-	}
-}
-
-class current extends bank
-{
-	public void cheque()
-	{
-		System.out.println("\nCheque services available");
-	}
-
-	public void withdrawal()
-	{
-		float amount;
-		Scanner a=new Scanner(System.in);
-		System.out.println("\nMinimun balance= Rs.1000.00");
-		if(super.bal<1000)
-			System.out.println("\nBalance is insufficient to withdraw");
-		else
-		{
-			System.out.print("Enter the amount to be withdrawm: ");
-			amount=a.nextFloat();
-			if(amount>(super.bal-1000))
-			{
-				System.out.println("Balance is insufficient");
-			}
-			else
-			{
-				super.bal=super.bal-amount;
-				System.out.println(amount+" withdrawm");
-				System.out.println("Available balance= "+super.bal);
-			}
-		}
-	}
-
-	public void penalty()
-	{
-		if(super.bal<1000)
-		{
-			System.out.print("\nPenalty rate: 10%");
-			double penalty=super.bal*(10.0/100);
-			super.bal=super.bal-penalty;
-			System.out.println("\nPenalty amount: Rs"+penalty);
-			System.out.println("\nAvailable balance: Rs"+super.bal);
-		}
-	}
+		System.out.print("Enter customer name: ");
+		name=s.nextLine();
 		
+		System.out.print("Enter account number: ");
+		accno=s.nextLong();
+		System.out.print("Enter bank balance: ");
+		balance=s.nextDouble();
+	}
+	void display()
+	{
+		System.out.println("Customer name is: "+name);
+		if(type==1) {
+			System.out.println("Customer account type is: Savings");
+		}
+		else {
+			System.out.println("Customer account type is: Current");
+		}
+		System.out.println("Customer account number is: "+accno);
+		System.out.println("Current balance is: "+balance);
+	}
+	void deposit()
+	{
+		System.out.print("Enter the amount to be deposited: ");
+		Scanner x=new Scanner(System.in);
+		double amt=x.nextDouble();
+		balance+=amt;
+	}	
 }
 
-class bankinterest
+
+class Sav_acct extends Account
 {
-	public static void main(String args[])
+	double interest;
+	Scanner s=new Scanner(System.in);
+	
+	Sav_acct() {
+		type=1;
+	}
+	void cinterest()
 	{
-		savings obj1[]=new savings[3];
-		current obj2[]=new current[3];
-		System.out.print("Enter the number of accounts: ");
-		Scanner x=new Scanner(System.in);
-		int n=x.nextInt();
-		int i=0;
-		int j=0;
-		int k=0;
-		while(i<n)
+		int timey;
+		float irate;
+		System.out.println("Compound Interest details:");
+		
+		System.out.println("Enter time in years: ");
+		timey=s.nextInt();
+		System.out.println("Enter rate of interest: ");
+		irate=s.nextFloat();
+		System.out.println("Interest will be compunded 5 times a year");
+		interest=balance*(Math.pow((1+irate/5),(5*timey)));
+		balance+=interest;
+	}
+	void withdraw()
+	{
+		System.out.println("Enter the amount to be withdrawn: "); 
+		double amt=s.nextDouble();
+		if(balance>amt)
+		{balance-=amt;}
+		else
+		{System.out.println("Amount to be withdrawn greater than balance!!!");}
+	}
+
+}
+
+class Curr_acct extends Account
+{
+	double check_amt;
+
+	Curr_acct() {
+		type=2;
+	}
+	
+	void cheque()
+	{
+		System.out.print("Enter the cheque amount: "); 
+		Scanner s=new Scanner(System.in);
+		check_amt = s.nextDouble();
+		if(check_amt>balance-5000) 
 		{
-			System.out.println("\nAccount "+(i+1));
-			System.out.println("\n1)Savings\n2)Current");
-			System.out.print("Enter the type of account: ");
-			int ch=x.nextInt();
-			if(ch==1)
+			System.out.println("Rs. 500 penalty imposed...Is it ok to proceed? Enter y for yes and n for no"); 
+			String option=s.next();
+			if(option.equals("y")) {balance=balance-check_amt-500;}
+			else {System.out.println("no check debited");}
+		}
+		else
+		{
+			System.out.println("Rupees "+check_amt+" debited"); balance-=check_amt;
+		}
+	}
+	void withdraw()
+	{
+		System.out.println("Enter the amount to be withdrawn: "); Scanner s=new Scanner(System.in);
+		double amt=s.nextDouble();
+		if(balance>amt)
+		{balance-=amt;}
+		else
+		{System.out.println("Amount to be withdrawn greater than balance!!!");}
+	}
+}
+
+class Bank {
+	public static void main(String ss[]) {
+		String op1,op2;
+		Scanner s=new Scanner(System.in);
+		System.out.println("1. Savings or   2. Current?");
+		int q;
+		q=s.nextInt();
+		if(q==1) {
+			Sav_acct s1 = new Sav_acct();
+			while(true) {
+			System.out.print("Enter the choice: \n1 .Set the values for savings acc\n2. display\n3. deposit\n4. Interest\n5. Withdraw\n6. exit\n");
+			op1=s.next();
+			switch(op1)
 			{
-				obj1[j]=new savings();
-				obj1[j].accept();
-				obj1[j].display();
-				obj1[j].cheque();
-				obj1[j].compound_interest();
-				obj1[j].withdrawal();
-				j++;
+			case "1":s1.setA();
+				  break;
+			case "2":s1.display();
+				  break;
+			case "3":s1.deposit();
+				  break;
+			case "4":s1.cinterest();
+				  break;
+			case "5":s1.withdraw();
+				  break;
+			case "6":System.exit(0);
 			}
-			else
+			}
+		}
+		else if(q==2) {
+			Curr_acct c1 = new Curr_acct();
+			while(true) {
+			System.out.print("Enter the choice: \n1.Set the values for current account\n2. display\n3. deposit\n4. transferCheck\n5. Withdraw\n6. exit\n");
+			op2=s.next();
+			switch(op2)
 			{
-				obj2[k]=new current();
-				obj2[k].accept();
-				obj2[k].display();
-				obj2[k].cheque();
-				obj2[k].withdrawal();
-				obj2[k].penalty();
-				k++;
+			case "1":c1.setA();
+				  break;
+			case "2":c1.display();
+				  break;
+			case "3":c1.deposit();
+				  break;
+			case "4":c1.cheque();
+				  break;
+			case "5":c1.withdraw();
+				  break;
+			case "6":System.exit(0);
 			}
-			i++;
+			}
 		}
 	}
 }
+			
+		

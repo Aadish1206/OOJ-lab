@@ -57,8 +57,7 @@ class Sav_acct extends Account
 		timey=s.nextInt();
 		System.out.println("Enter rate of interest: ");
 		irate=s.nextFloat();
-		System.out.println("Interest will be compunded 5 times a year");
-		interest=balance*(Math.pow((1+irate/5),(5*timey)));
+		interest=balance * (Math.pow((1 + irate / 100), timey)) - balance;
 		balance+=interest;
 	}
 	void withdraw()

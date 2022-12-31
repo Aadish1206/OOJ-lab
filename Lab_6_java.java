@@ -57,7 +57,8 @@ class Son extends Father{
 class Lab_6_java{
     public static void main(String[] args) {
         try{
-
+            Father f= new Father();
+            f.display();
             Son s = new Son();
             s.display();
         }
